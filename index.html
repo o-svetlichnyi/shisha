@@ -2,7 +2,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Page Title</title>
+    <meta charset="utf-8">
+    <title>Page Title</title>
 </head>
 <body>
 
@@ -13,7 +14,7 @@
           width: 3em;
           text-align: center;
         }
-        .total::-webkit-inner-spin-button { 
+        .total::-webkit-inner-spin-button {
           display: none;
         }
         .procent {
@@ -22,21 +23,21 @@
           width: 3em;
           text-align: center;
         }
-        .procent::-webkit-inner-spin-button { 
+        .procent::-webkit-inner-spin-button {
           display: none;
         }
     </style>
 <p>Укажите общий обьём в ml:</p>
 
-    <button type="button" onclick="this.nextElementSibling.stepDown()">-</button>
+    <button type="button" onclick="this.nextElementSibling.stepDown();this.nextElementSibling.dispatchEvent(new Event('input'));">-</button>
     <input type="number" min="0" max="1000" value="50" id="total" step="5" >
-    <button type="button" onclick="this.previousElementSibling.stepUp()">+</button>
+    <button type="button" onclick="this.previousElementSibling.stepUp();this.previousElementSibling.dispatchEvent(new Event('input'));">+</button>
 
 <p>Укажите % ароматизатора:</p>
 
-    <button type="button" onclick="this.nextElementSibling.stepDown()">-</button>
+    <button type="button" onclick="this.nextElementSibling.stepDown();this.nextElementSibling.dispatchEvent(new Event('input'));">-</button>
     <input type="number" min="0" max="50" value="5" id="procent" step="0.5" >
-    <button type="button" onclick="this.previousElementSibling.stepUp()">+</button>
+    <button type="button" onclick="this.previousElementSibling.stepUp();this.previousElementSibling.dispatchEvent(new Event('input'));">+</button>
     <br>
     <br>
 
@@ -54,41 +55,38 @@ function findTotal(){
 }
 
   </script>
-    
-
-
-
     <script>
+        const changeSummaryValues = (a,b)=>{
+            let kk = 33
+            let c = b/100*a
+            let ka = a*kk
+            let cb = c*kk
+            document.getElementById("idka").value = ka;
+            document.getElementById("ida").value = a;
+            document.getElementById("idc").value = c;
+            document.getElementById("idcb").value = cb;
+        }
 
-while (true) {
-myFunction()
-  
-}
         function myFunction() {
-        let a = document.getElementById('total').value;
-          console.log(a)
-        let b = document.getElementById('procent').value;
-          console.log(b)
+            const volumeInput = document.getElementById('total');
+            const percentInput = document.getElementById('procent');
+            changeSummaryValues(volumeInput.value,percentInput.value)
 
-        let c = b/100*a
-        let kk = 33
-        let ka = a*kk
-        let cb = c*kk
+            volumeInput.addEventListener('input',e=>{
+                let a =e.target.value;
+                let b = percentInput.value
+                changeSummaryValues(a,b)
+            })
+            percentInput.addEventListener('input',e=>{
+                let a =volumeInput.value;
+                let b = e.target.value
+                changeSummaryValues(a,b)
+            })
+        }
 
-
-        const output = 'общий обьём = ' + a + 'ml ,в каплях = ' + ka
-        const output2 = 'кол-во аромки = ' + c + 'ml ,в каплях = ' + cb
-        console.log(output,output2)
-
-
-
-
-        document.getElementById("idka").value = ka;
-        document.getElementById("ida").value = a;
-        document.getElementById("idc").value = c;
-        document.getElementById("idcb").value = cb;
-
-}
+        document.addEventListener('DOMContentLoaded', function(){
+           myFunction()
+        });
     </script>
 <table style="width:100%">
     <tr>
